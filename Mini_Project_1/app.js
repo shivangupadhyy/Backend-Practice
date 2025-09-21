@@ -22,7 +22,7 @@ app.get("/login", (req, res) => {
 
 app.get('/profile', isLoggedIn, (req, res)=>{
     console.log(req.user);
-    res.render("login")
+    res.render("profile")
 })
 
 app.post("/signup", async (req, res) => {
@@ -87,7 +87,7 @@ app.post("/login", async (req, res) => {
     console.log("✅ User logged in:", existingUser.email, { token });
 
     // 5. Send response
-    res.status(200).json({
+    res.status(200).redirect("/profile").json({
       message: "Login successful!",
       email: existingUser.email,
       token,
@@ -107,7 +107,7 @@ function isLoggedIn(req, res, next){
     const token = req.cookies.token;
 
     if(!token){
-       return res.send("you must be logged in");
+        res.redirect("/login");
     }
     
     try{
